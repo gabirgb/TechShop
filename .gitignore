@@ -1,0 +1,15 @@
+# Dependencias
+node_modules/
+
+# Logs
+*.log
+
+# Cobertura
+coverage/
+
+# Entorno
+.env
+
+# Compilados y caches
+dist/
+.cache/

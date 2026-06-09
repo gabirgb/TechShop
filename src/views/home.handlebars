@@ -1,0 +1,64 @@
+{{!-- USO DE HANDLERS
+Cuando usas un helper común como {{mayusculas nombre}}, Handlebars solo le pasa a tu función la variable nombre.
+Pero cuando usas un helper con un hashtag {{#siEsIgual ...}}, le estás diciendo a Handlebars: "Ojo, esto es un bloque que encierra código HTML dentro".
+Cuando Handlebars ve eso le pasa a mi funcion el parámetro "options" x detras.
+OPTIONS es un OBJETO de JavaScript que viene con dos funciones por defecto que representan esos trozos de HTML:
+- options.fn: es la función que renderiza todo desde {{#siEsIgual}} hasta el {{else}}.
+- options.inverse: es la función que renderiza el bloque contrario, o sea, lo que está dentro del {{else}}.
+
+export const siEsIgual = function (arg1, arg2, options) {
+    return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+};
+--}}
+
+<section class="bienvenida">
+  <h1>{{mayusculas message}}</h1>
+  <p>Bienvenido a **TechShop**, tu tienda de tecnología de confianza.</p>
+</section>
+
+{{#if formEnviado}}
+  <div class="alerta alerta-exito">
+    <p>🎉 ¡Gracias! Tu mensaje de contacto ha sido enviado con éxito. Te responderemos pronto.</p>
+  </div>
+{{/if}}
+
+<hr class="separador" />
+
+<section class="estado-usuario">
+  {{!-- Handlebars evalúa {{#siEsIgual autenticado true}}.
+siendo "autenticado" una variable declarada en el res.render de esta view (Home) - routes/index.js --}}
+  {{#siEsIgual autenticado true}}
+    <div class="alerta alerta-exito">
+      <p>👋 ¡Hola de nuevo! Estás conectado como **Usuario VIP**. Tienes un 10% de descuento
+        disponible.</p>
+    </div>
+  {{else}}
+    <div class="alerta alerta-info">
+      <p>💡 ¿Ya tienes cuenta? <a href="/login">Inicia sesión</a> para ver ofertas exclusivas.</p>
+    </div>
+  {{/siEsIgual}}
+</section>
+
+<section class="seccion-productos">
+  <h2>Productos Destacados</h2>
+  <p class="subtitulo">Una selección de lo mejor para tu setup</p>
+
+  <div class="grilla-productos">
+    {{#each productos}}
+      <article class="tarjeta-producto">
+        <img src="{{this.imagenes.[0]}}" alt="{{this.nombre}}" class="imagen-producto" />
+        <div class="info-producto">
+          <span class="categoria-etiqueta">{{mayusculas this.categoria}}</span>
+          <h3>{{this.nombre}}</h3>
+          <p class="marca">Marca: {{this.marca}}</p>
+          <div class="fila-precio-stock">
+            <span class="precio">${{this.precio}}</span>
+          </div>
+          <a href="/products/{{this.id}}" class="btn-detalle">Ver Detalle</a>
+        </div>
+      </article>
+    {{else}}
+      <p class="no-productos">No hay productos destacados en este momento.</p>
+    {{/each}}
+  </div>
+</section>

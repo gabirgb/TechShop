@@ -1,0 +1,33 @@
+<section class="catalogo-productos">
+  <h1>Nuestro Catálogo</h1>
+  <p class="subtitulo">Explora los mejores componentes para tu setup.</p>
+
+  <div class="grilla-productos">
+    {{#each productos}}
+      <article class="tarjeta-producto">
+        <img src="{{this.imagenes.[0]}}" alt="{{this.nombre}}" class="imagen-producto" />
+
+        <div class="info-producto">
+          <span class="categoria-etiqueta">{{mayusculas this.categoria}}</span>
+          <h3>{{this.nombre}}</h3>
+          <p class="marca">Marca: {{this.marca}}</p>
+          <p class="descripcion-corta">{{this.descripcion}}</p>
+
+          <div class="fila-precio-stock">
+            <span class="precio">${{this.precio}}</span>
+
+            {{#siEsIgual this.stock 0}}
+              <span class="stock sin-stock">Sin Stock</span>
+            {{else}}
+              <span class="stock con-stock">Stock: {{this.stock}} u.</span>
+            {{/siEsIgual}}
+          </div>
+
+          <a href="/products/{{this.id}}" class="btn-detalle">Ver Detalle</a>
+        </div>
+      </article>
+    {{else}}
+      <p class="no-productos">Por el momento no hay productos disponibles en el catálogo.</p>
+    {{/each}}
+  </div>
+</section>

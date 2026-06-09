@@ -1,0 +1,37 @@
+<article class="detalle-producto-contenedor">
+  <div class="columna-imagenes">
+    <img
+      src="{{producto.imagenes.[0]}}"
+      alt="{{producto.nombre}}"
+      class="imagen-detalle-principal"
+    />
+
+    <div class="galeria-miniaturas">
+      {{#each producto.imagenes}}
+        <img src="{{this}}" alt="Miniatura" class="foto-miniatura" />
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="columna-info">
+    <span class="categoria-etiqueta">{{mayusculas producto.categoria}}</span>
+    <h1>{{producto.nombre}}</h1>
+    <p class="marca-detalle">Marca: <strong>{{producto.marca}}</strong></p>
+
+    <p class="descripcion-larga">{{producto.descripcion}}</p>
+
+    <div class="bloque-compra">
+      <span class="precio-grande">${{producto.precio}}</span>
+
+      {{#siEsIgual producto.stock 0}}
+        <div class="alerta-stock agotado">⚠️ Producto temporalmente sin stock</div>
+        <button class="btn-comprar" disabled>Agotado</button>
+      {{else}}
+        <div class="alerta-stock disponible">✅ ¡Disponibles: {{producto.stock}} unidades!</div>
+        <button class="btn-comprar">Añadir al carrito 🛒</button>
+      {{/siEsIgual}}
+    </div>
+
+    <a href="/products" class="enlace-volver">⬅️ Volver al catálogo completo</a>
+  </div>
+</article>

@@ -1,0 +1,302 @@
+[
+  {
+    "id": 1,
+    "nombre": "Teclado Mecánico RGB",
+    "marca": "HyperX",
+    "categoria": "perifericos",
+    "precio": 85,
+    "stock": 12,
+    "destacado": true,
+    "imagenes": ["https://picsum.photos/400/300?random=1"]
+  },
+  {
+    "id": 2,
+    "nombre": "Monitor Gamer 24'' 144Hz",
+    "marca": "ASUS",
+    "categoria": "monitores",
+    "precio": 210,
+    "stock": 8,
+    "destacado": true,
+    "imagenes": ["https://picsum.photos/400/300?random=2"]
+  },
+  {
+    "id": 3,
+    "nombre": "Mouse Inalámbrico Ergonómico",
+    "marca": "Logitech",
+    "categoria": "perifericos",
+    "precio": 45,
+    "stock": 0,
+    "destacado": false,
+    "imagenes": ["https://picsum.photos/400/300?random=3"]
+  },
+  {
+    "id": 4,
+    "nombre": "Procesador Ryzen 7 5700X",
+    "marca": "AMD",
+    "categoria": "componentes",
+    "precio": 240,
+    "stock": 15,
+    "destacado": true,
+    "imagenes": ["https://picsum.photos/400/300?random=4"]
+  },
+  {
+    "id": 5,
+    "nombre": "Memoria RAM 16GB DDR4",
+    "marca": "Corsair",
+    "categoria": "componentes",
+    "precio": 65,
+    "stock": 30,
+    "destacado": false,
+    "imagenes": ["https://picsum.photos/400/300?random=5"]
+  },
+  {
+    "id": 6,
+    "nombre": "Placa de Video RTX 4060",
+    "marca": "MSI",
+    "categoria": "componentes",
+    "precio": 399,
+    "stock": 5,
+    "destacado": true,
+    "imagenes": ["https://picsum.photos/400/300?random=6"]
+  },
+  {
+    "id": 7,
+    "nombre": "Disco Sólido SSD NVMe 1TB",
+    "marca": "Kingston",
+    "categoria": "almacenamiento",
+    "precio": 75,
+    "stock": 22,
+    "destacado": false,
+    "imagenes": ["https://picsum.photos/400/300?random=7"]
+  },
+  {
+    "id": 8,
+    "nombre": "Fuente de Alimentación 750W",
+    "marca": "EVGA",
+    "categoria": "componentes",
+    "precio": 95,
+    "stock": 10,
+    "destacado": false,
+    "imagenes": ["https://picsum.photos/400/300?random=8"]
+  },
+  {
+    "id": 9,
+    "nombre": "Gabinete Mid-Tower Mesh",
+    "marca": "Nzxt",
+    "categoria": "componentes",
+    "precio": 110,
+    "stock": 7,
+    "destacado": false,
+    "imagenes": ["https://picsum.photos/400/300?random=9"]
+  },
+  {
+    "id": 10,
+    "nombre": "Auriculares Gamer 7.1",
+    "marca": "Razer",
+    "categoria": "audio",
+    "precio": 89,
+    "stock": 14,
+    "destacado": true,
+    "imagenes": ["https://picsum.photos/400/300?random=10"]
+  },
+  {
+    "id": 11,
+    "nombre": "Water Cooling 240mm",
+    "marca": "Cooler Master",
+    "categoria": "componentes",
+    "precio": 125,
+    "stock": 4,
+    "destacado": false,
+    "imagenes": ["https://picsum.photos/400/300?random=11"]
+  },
+  {
+    "id": 12,
+    "nombre": "Monitor Curvo 27'' QHD",
+    "marca": "Samsung",
+    "categoria": "monitores",
+    "precio": 320,
+    "stock": 6,
+    "destacado": true,
+    "imagenes": ["https://picsum.photos/400/300?random=12"]
+  },
+  {
+    "id": 13,
+    "nombre": "Mouse Pad XL Antideslizante",
+    "marca": "Redragon",
+    "categoria": "perifericos",
+    "precio": 20,
+    "stock": 50,
+    "destacado": false,
+    "imagenes": ["https://picsum.photos/400/300?random=13"]
+  },
+  {
+    "id": 14,
+    "nombre": "Placa Madre B550M",
+    "marca": "Gigabyte",
+    "categoria": "componentes",
+    "precio": 130,
+    "stock": 9,
+    "destacado": false,
+    "imagenes": ["https://picsum.photos/400/300?random=14"]
+  },
+  {
+    "id": 15,
+    "nombre": "Micrófono Condensador USB",
+    "marca": "Blue Yeti",
+    "categoria": "audio",
+    "precio": 149,
+    "stock": 3,
+    "destacado": true,
+    "imagenes": ["https://picsum.photos/400/300?random=15"]
+  },
+  {
+    "id": 16,
+    "nombre": "Cámara Web 1080p 60fps",
+    "marca": "Logitech",
+    "categoria": "perifericos",
+    "precio": 99,
+    "stock": 11,
+    "destacado": false,
+    "imagenes": ["https://picsum.photos/400/300?random=16"]
+  },
+  {
+    "id": 17,
+    "nombre": "Procesador Intel i5-13400F",
+    "marca": "Intel",
+    "categoria": "componentes",
+    "precio": 215,
+    "stock": 8,
+    "destacado": false,
+    "imagenes": ["https://picsum.photos/400/300?random=17"]
+  },
+  {
+    "id": 18,
+    "nombre": "Memoria RAM 32GB DDR5",
+    "marca": "Kingston",
+    "categoria": "componentes",
+    "precio": 140,
+    "stock": 15,
+    "destacado": true,
+    "imagenes": ["https://picsum.photos/400/300?random=18"]
+  },
+  {
+    "id": 19,
+    "nombre": "Placa de Video RX 7600",
+    "marca": "Sapphire",
+    "categoria": "componentes",
+    "precio": 299,
+    "stock": 0,
+    "destacado": false,
+    "imagenes": ["https://picsum.photos/400/300?random=19"]
+  },
+  {
+    "id": 20,
+    "nombre": "Disco Duro Externo 2TB",
+    "marca": "Seagate",
+    "categoria": "almacenamiento",
+    "precio": 85,
+    "stock": 18,
+    "destacado": false,
+    "imagenes": ["https://picsum.photos/400/300?random=20"]
+  },
+  {
+    "id": 21,
+    "nombre": "Silla Gamer Ergonómica",
+    "marca": "Corsair",
+    "categoria": "perifericos",
+    "precio": 349,
+    "stock": 2,
+    "destacado": true,
+    "imagenes": ["https://picsum.photos/400/300?random=21"]
+  },
+  {
+    "id": 22,
+    "nombre": "Barra de Sonido para PC",
+    "marca": "Razer",
+    "categoria": "audio",
+    "precio": 110,
+    "stock": 5,
+    "destacado": false,
+    "imagenes": ["https://picsum.photos/400/300?random=22"]
+  },
+  {
+    "id": 23,
+    "nombre": "Router Wi-Fi 6 Gamer",
+    "marca": "TP-Link",
+    "categoria": "perifericos",
+    "precio": 135,
+    "stock": 12,
+    "destacado": false,
+    "imagenes": ["https://picsum.photos/400/300?random=23"]
+  },
+  {
+    "id": 24,
+    "nombre": "Pastas Térmica de Alta Densidad",
+    "marca": "Arctic",
+    "categoria": "componentes",
+    "precio": 12,
+    "stock": 100,
+    "destacado": false,
+    "imagenes": ["https://picsum.photos/400/300?random=24"]
+  },
+  {
+    "id": 25,
+    "nombre": "Capturadora de Video 4K",
+    "marca": "Elgato",
+    "categoria": "perifericos",
+    "precio": 199,
+    "stock": 4,
+    "destacado": true,
+    "imagenes": ["https://picsum.photos/400/300?random=25"]
+  },
+  {
+    "id": 26,
+    "nombre": "Hub USB-C de 7 Puertos",
+    "marca": "Anker",
+    "categoria": "perifericos",
+    "precio": 35,
+    "stock": 25,
+    "destacado": false,
+    "imagenes": ["https://picsum.photos/400/300?random=26"]
+  },
+  {
+    "id": 27,
+    "nombre": "Placa Madre Z795 LGA1700",
+    "marca": "ASUS",
+    "categoria": "componentes",
+    "precio": 260,
+    "stock": 6,
+    "destacado": false,
+    "imagenes": ["https://picsum.photos/400/300?random=27"]
+  },
+  {
+    "id": 28,
+    "nombre": "Brazo Hidráulico para Monitor",
+    "marca": "Ergotron",
+    "categoria": "perifericos",
+    "precio": 160,
+    "stock": 8,
+    "destacado": false,
+    "imagenes": ["https://picsum.photos/400/300?random=28"]
+  },
+  {
+    "id": 29,
+    "nombre": "Kit de Ventiladores ARGB (x3)",
+    "marca": "Lian Li",
+    "categoria": "componentes",
+    "precio": 89,
+    "stock": 14,
+    "destacado": true,
+    "imagenes": ["https://picsum.photos/400/300?random=29"]
+  },
+  {
+    "id": 30,
+    "nombre": "Gafas con Filtro de Luz Azul",
+    "marca": "Gunnar",
+    "categoria": "perifericos",
+    "precio": 55,
+    "stock": 20,
+    "destacado": false,
+    "imagenes": ["https://picsum.photos/400/300?random=30"]
+  }
+]
