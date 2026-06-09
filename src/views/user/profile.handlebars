@@ -1,0 +1,80 @@
+<section class="contenedor-perfil">
+  <h1>Mi Perfil de Usuario</h1>
+
+  <div class="tarjeta-perfil-grid">
+    <div class="bloque-actual">
+      <div class="avatar-marco">
+        {{#if usuario.avatar}}
+          <img
+            src="/uploads/avatars/{{usuario.avatar}}"
+            alt="Avatar de {{usuario.username}}"
+            class="avatar-foto"
+          />
+        {{else}}
+          <img src="/img/avatar-dummy.png" alt="Avatar por defecto" class="avatar-foto" />
+        {{/if}}
+      </div>
+      <h2>@{{usuario.username}}</h2>
+      <p class="bio-actual">{{usuario.descripcion}}</p>
+
+      {{#if usuario.comprobantesCargados}}
+        <div class="comprobantes-lista">
+          <h3>Comprobantes enviados ({{usuario.comprobantesCargados.length}}):</h3>
+          <ul>
+            {{#each usuario.comprobantesCargados}}
+              <li>📄 <a href="/uploads/comprobantes/{{this}}" target="_blank">{{this}}</a></li>
+            {{/each}}
+          </ul>
+        </div>
+      {{/if}}
+    </div>
+    {{! enctype="multipart/form-data". Sin esto, Multer jamás va a enterarse de los archivos. }}
+    <form
+      action="/user/profile"
+      method="POST"
+      enctype="multipart/form-data"
+      class="formulario-edicion"
+    >
+      <h3>Actualizar Datos</h3>
+
+      <div class="grupo-campo">
+        <label for="username">Nombre de Usuario:</label>
+        <input type="text" id="username" name="username" value="{{usuario.username}}" required />
+      </div>
+
+      <div class="grupo-campo">
+        <label for="password">Contraseña:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value="{{usuario.password}}"
+          required
+        />
+      </div>
+
+      <div class="grupo-campo">
+        <label for="descripcion">Bio:</label>
+        <textarea id="descripcion" name="descripcion" rows="3">{{usuario.descripcion}}</textarea>
+      </div>
+
+      <div class="grupo-campo">
+        <label for="avatar">Foto de perfil (JPG/PNG - Máx 2MB):</label>
+        <input type="file" id="avatar" name="avatar" accept=".jpg, .jpeg, .png" />
+      </div>
+
+      <div class="grupo-campo">
+        <label for="comprobantes">Comprobantes de Pago (PDF/Imágenes - Máx 5 archivos de 5MB):</label>
+        <input
+          type="file"
+          id="comprobantes"
+          name="comprobantes"
+          accept=".jpg, .jpeg, .png, .pdf"
+          multiple
+        />
+      </div>
+
+      <button type="submit" class="btn-guardar">Guardar Cambios</button>
+    </form>
+  </div>
+</section>

@@ -7,8 +7,10 @@ import { fileURLToPath } from "url";
 import { configureHandlebars } from "./config/handlebars.js";
 // 1. Importas los routers
 // La ruta raíz (/) ahora vive dentro del archivo src/routes/index.js (para usar express.Router()). Ahí es donde está guardada la variable autenticado.
+//mainRoutes, productRoutes y userRoutes son alias para usar luego en el app.use() y vincularlos a la aplicación.
 import mainRoutes from "./routes/index.js";
 import productRoutes from "./routes/products.js";
+import userRoutes from "./routes/user.js";
 
 
 // creo una instancia de express
@@ -36,6 +38,13 @@ app.use(express.urlencoded({ extended: true }));
 // .static es un middleware que viene construido dentro de express para indicar que esa carpeta es de archivos estáticos
 // .use es un método de express para montar un middleware en la aplicación (app.js) - "A partir de este momento, activa y usa esta regla para cada petición que llegue a la web".
 // ACA le indico a Express que cada vez que llegue una petición, busque primero en la carpeta "public" un archivo que coincida con la ruta solicitada. Por ejemplo, si el cliente solicita "/style.css", Express buscará "public/style.css" y lo servirá si existe. Esto es fundamental para servir archivos como CSS, JavaScript o imágenes que son necesarios para el correcto funcionamiento y diseño de la página web.
+
+// Por teoría de Express, el navegador solo tiene permitido el acceso a las cosas que estén dentro de la carpeta que registraste con el middleware express.static (en src/app.js)
+// Esto le dice a EXPRESS: "Cualquier petición que empiece con una barra diagonal / (como /img/... o /uploads/...), ve a buscarla directamente adentro de la carpeta public".
+// Para el NAVEGADOR, la carpeta public es invisible; él piensa que está parado adentro de ella. Por eso en el HTML NUNCA SE ESCRIBE LA PALABRA PUBLIC.
+//👌 Bien escrito en el HTML: /img/avatar-dummy.png ➡️ Express lo busca en src/public/img/avatar-dummy.png (Funciona).
+//❌ Mal escrito en el HTML: /src/public/img/avatar-dummy.png ➡️ Express lo buscará en src/public/src/images/... (Dará error 404).
+
 app.use(express.static(path.join(import.meta.dirname, "public")));
 
 // 2. Configurar el Motor de Plantillas (Handlebars)
@@ -44,7 +53,7 @@ configureHandlebars(app);
 // 3. Vinculas los routers a la aplicación
 app.use("/", mainRoutes); // Las rutas dentro de index.js no tienen prefijo (ej: /)
 app.use("/products", productRoutes); // CUALQUIER ruta dentro de products.js empezará con /products
-
+app.use("/user", userRoutes); // CUALQUIER ruta dentro de user.js empezará con /user
 // 4. Encendido del Servidor y escucho en el puerto definido
 app.listen(port, () => {
   // imprimo un mensaje en la consola indicando que el servidor está corriendo

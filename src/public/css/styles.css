@@ -383,3 +383,75 @@ body {
   color: #475569;
   font-size: 0.95rem;
 }
+.contenedor-perfil {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+.tarjeta-perfil-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+@media (max-width: 768px) {
+  .tarjeta-perfil-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.bloque-actual {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+.avatar-marco {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 1.5rem;
+  border: 4px solid #3b82f6;
+}
+.avatar-foto {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.formulario-edicion {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.comprobantes-lista {
+  margin-top: 2rem;
+  text-align: left;
+  background: #f8fafc;
+  padding: 1rem;
+  border-radius: 6px;
+}
+.comprobantes-lista ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 0.5rem;
+}
+.comprobantes-lista a {
+  color: #2563eb;
+  font-size: 0.85rem;
+}
+.btn-guardar {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 1rem;
+}
+.btn-guardar:hover {
+  background: #059669;
+}
