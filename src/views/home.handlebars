@@ -62,3 +62,15 @@ siendo "autenticado" una variable declarada en el res.render de esta view (Home)
     {{/each}}
   </div>
 </section>
+
+<nav class="paginador">
+  {{#if paginaAnterior}}
+    <a href="?pagina={{paginaAnterior}}" class="btn-pag">⬅️ Anterior</a>
+  {{/if}}
+
+  <span class="info-pag">Página <strong>{{paginaActual}}</strong> de {{totalPaginas}}</span>
+
+  {{#if paginaSiguiente}}
+    <a href="?pagina={{paginaSiguiente}}" class="btn-pag">Siguiente ➡️</a>
+  {{/if}}
+</nav>

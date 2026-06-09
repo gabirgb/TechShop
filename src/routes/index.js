@@ -7,22 +7,58 @@ const router = Router();
 
 // 4.1. Ruta para el Home (/)
 router.get("/", (req, res) => {
-    // 2. Filtramos el array para quedarnos SOLO con los productos que tengan destacado: true
-    const productosDestacados = productos.filter(p => p.destacado === true);
-
     // Capturamos si en la URL viene ?contacto=exito
     const msgContactoExito = req.query.contacto === "exito";
 
-    // envío una respuesta al cliente pero reemplazo el res.send por res.render para renderizar una vista de express-handlebars
+    // 2. Filtramos el array para quedarnos SOLO con los productos que tengan destacado: true
+    const productosDestacados = productos.filter(p => p.destacado === true);
+
+    // 1. Capturamos la página actual de la URL (ej: ?pagina=2). Si no viene, por defecto es la 1.
+    const paginaActual = Number(req.query.pagina) || 1;
+    const limitePorPagina = 6;
+
+    const totalProductos = productosDestacados.length;
+    // Math.ceil() - redondear hacia arriba
+    const totalPaginas = Math.ceil(totalProductos / limitePorPagina);
+
+    // 2. Calculamos los índices para rebanar el array
+    const indiceInicio = (paginaActual - 1) * limitePorPagina;
+    const indiceFin = indiceInicio + limitePorPagina;
+
+    // 3. Cortamos el array para quedarnos solo con los 9 de esta página
+    const productosPaginados = productosDestacados.slice(indiceInicio, indiceFin);
+
+    // 4. Calculamos los números de página anterior y siguiente (o false si no existen)
+    const paginaAnterior = paginaActual > 1 ? paginaActual - 1 : false;
+    const paginaSiguiente = paginaActual < totalPaginas ? paginaActual + 1 : false;
+
+    // 5. Le mandamos todo masticado a la vista
     res.render("home", {
         title: "Inicio",
         message: "¡Bienvenida a TechShop!", // lo uso para implementar el helper de mayusculas en la vista
+        productos: productosPaginados, // <-- Enviamos solo las 6 de esta página
+        paginaActual,
+        totalPaginas,
+        paginaAnterior,
+        paginaSiguiente,
         autenticado: true, // si es false se ve el recuadro azul de "Inicia sesión"
-        // 3. Le pasamos ese nuevo array filtrado a la vista home
-        productos: productosDestacados,
         formEnviado: msgContactoExito // <-- Se lo pasamos como booleano a Handlebars para q lo muestre en msje flotante en la home.handlebars
     });
 });
+
+
+
+
+
+
+
+//     // envío una respuesta al cliente pero reemplazo el res.send por res.render para renderizar una vista de express-handlebars
+//     res.render("home", {
+//         title: "Inicio",
+//         // 3. Le pasamos ese nuevo array filtrado a la vista home
+//         productos: productosDestacados,
+//     });
+// });
 
 // 4.2. Ruta GET para ver la página de contacto
 router.get("/contacto", (req, res) => {

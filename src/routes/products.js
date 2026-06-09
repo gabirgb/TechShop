@@ -6,12 +6,36 @@ import productos from "../data/productos.json" with { type: "json" };
 
 const router = Router();
 
-// 4.1. Ruta (7 - "Inicio") para el Listado Completo de Productos (/products/list.handlebars)
+// FORMULA / LOGICA PARA CALCULAR LA PAGINACION
+// 4.1. Ruta para el Listado Completo de Productos (/products/list.handlebars)
 router.get("/", (req, res) => {
-    //4.2 Le pasamos el array de productos completo a la vista 'products/list'
+    // 1. Capturamos la página actual de la URL (ej: ?pagina=2). Si no viene, por defecto es la 1.
+    const paginaActual = Number(req.query.pagina) || 1;
+    const limitePorPagina = 9;
+
+    const totalProductos = productos.length;
+    // Math.ceil() - redondear hacia arriba
+    const totalPaginas = Math.ceil(totalProductos / limitePorPagina);
+
+    // 2. Calculamos los índices para rebanar el array
+    const indiceInicio = (paginaActual - 1) * limitePorPagina;
+    const indiceFin = indiceInicio + limitePorPagina;
+
+    // 3. Cortamos el array para quedarnos solo con los 9 de esta página
+    const productosPaginados = productos.slice(indiceInicio, indiceFin);
+
+    // 4. Calculamos los números de página anterior y siguiente (o false si no existen)
+    const paginaAnterior = paginaActual > 1 ? paginaActual - 1 : false;
+    const paginaSiguiente = paginaActual < totalPaginas ? paginaActual + 1 : false;
+
+    // 5. Le mandamos todo masticado a la vista
     res.render("products/list", {
         title: "Catálogo de Productos",
-        productos: productos
+        productos: productosPaginados, // <-- Enviamos solo las 9 de esta página
+        paginaActual,
+        totalPaginas,
+        paginaAnterior,
+        paginaSiguiente
     });
 });
 
