@@ -1,7 +1,7 @@
-// src/routes/index.js
+// src/routes/views/web.views.js
 import { Router } from "express";
 // 1. Importamos el JSON de productos aquí también
-import productos from "../data/productos.json" with { type: "json" };
+import productos from "../../data/productos.json" with { type: "json" };
 
 const router = Router();
 
@@ -47,19 +47,6 @@ router.get("/", (req, res) => {
 });
 
 
-
-
-
-
-
-//     // envío una respuesta al cliente pero reemplazo el res.send por res.render para renderizar una vista de express-handlebars
-//     res.render("home", {
-//         title: "Inicio",
-//         // 3. Le pasamos ese nuevo array filtrado a la vista home
-//         productos: productosDestacados,
-//     });
-// });
-
 // 4.2. Ruta GET para ver la página de contacto
 router.get("/contacto", (req, res) => {
     res.render("contacto", {
@@ -97,5 +84,50 @@ router.get("/sucursales", (req, res) => {
     });
 });
 
-export default router;
 
+// =========================================================================
+// 🚀 NUEVAS RUTAS SUMADAS: Aquí activamos lo que te faltaba para el navegador
+// =========================================================================
+
+// 4.6. Catálogo General de Productos Visual (Muestra los 30 productos con tu lógica de 9 por página)
+router.get("/products", (req, res) => {
+    const paginaActual = Number(req.query.pagina) || 1;
+    const limitePorPagina = 9; // 9 productos en el catálogo general
+
+    const totalProductos = productos.length;
+    const totalPaginas = Math.ceil(totalProductos / limitePorPagina);
+
+    const indiceInicio = (paginaActual - 1) * limitePorPagina;
+    const indiceFin = indiceInicio + limitePorPagina;
+
+    const productosPaginados = productos.slice(indiceInicio, indiceFin);
+
+    const paginaAnterior = paginaActual > 1 ? paginaActual - 1 : false;
+    const paginaSiguiente = paginaActual < totalPaginas ? paginaActual + 1 : false;
+
+    res.render("products/list", {
+        title: "Catálogo de Productos",
+        productos: productosPaginados,
+        paginaActual,
+        totalPaginas,
+        paginaAnterior,
+        paginaSiguiente
+    });
+});
+
+// 4.7. Vista de Detalle de un Producto específico (Para cuando tocan "Ver detalle")
+router.get("/products/:id", (req, res) => {
+    const productoId = Number(req.params.id);
+    const productoEncontrado = productos.find(p => p.id === productoId);
+
+    if (!productoEncontrado) {
+        return res.status(404).send("<h1>404 - Producto no encontrado</h1>");
+    }
+
+    res.render("products/detail", {
+        title: productoEncontrado.nombre,
+        producto: productoEncontrado
+    });
+});
+
+export default router;

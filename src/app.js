@@ -2,23 +2,26 @@
 
 //Importo express
 import express from "express";
-import path from "path";
-import { fileURLToPath } from "url";
 import { configureHandlebars } from "./config/handlebars.js";
+import path from "path";
+
+import { fileURLToPath } from "url";
 // 1. Importas los routers
 // La ruta raíz (/) ahora vive dentro del archivo src/routes/index.js (para usar express.Router()). Ahí es donde está guardada la variable autenticado.
 //mainRoutes, productRoutes y userRoutes son alias para usar luego en el app.use() y vincularlos a la aplicación.
-import mainRoutes from "./routes/index.js";
-import productRoutes from "./routes/products.js";
+import webViewsRoutes from "./routes/views/web.views.js";
+import productsApiRoutes from "./routes/api/products.api.js";
 import userRoutes from "./routes/user.js";
 
 
 // creo una instancia de express
 const app = express();
 // defino el puerto en el que se ejecutará la aplicación
-const port = 3000;
+const port = 8080;
 
 // * MIDDLEWARES * //
+
+app.use(express.json());
 
 // 🔥 MIDDLEWARE CRÍTICO: Permite a Express leer los datos enviados desde formularios HTML
 app.use(express.urlencoded({ extended: true }));
@@ -51,8 +54,8 @@ app.use(express.static(path.join(import.meta.dirname, "public")));
 configureHandlebars(app);
 
 // 3. Vinculas los routers a la aplicación
-app.use("/", mainRoutes); // Las rutas dentro de index.js no tienen prefijo (ej: /)
-app.use("/products", productRoutes); // CUALQUIER ruta dentro de products.js empezará con /products
+app.use("/", webViewsRoutes); // Las rutas dentro de index.js no tienen prefijo (ej: /)
+app.use("/api/products", productsApiRoutes); // CUALQUIER ruta dentro de products.js empezará con /products
 app.use("/user", userRoutes); // CUALQUIER ruta dentro de user.js empezará con /user
 // 4. Encendido del Servidor y escucho en el puerto definido
 app.listen(port, () => {
