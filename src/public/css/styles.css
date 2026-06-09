@@ -455,3 +455,14 @@ body {
 .btn-guardar:hover {
   background: #059669;
 }
+.enlace-perfil {
+  background: #e2e8f0;
+  color: #1e293b !important;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+.enlace-perfil:hover {
+  background: #cbd5e1;
+}
