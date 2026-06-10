@@ -12,7 +12,7 @@ import { fileURLToPath } from "url";
 import webViewsRoutes from "./routes/views/web.views.js";
 import productsApiRoutes from "./routes/api/products.api.js";
 import userRoutes from "./routes/user.js";
-
+import cartsApiRoutes from "./routes/api/carts/carts.api.js";
 
 // creo una instancia de express
 const app = express();
@@ -57,6 +57,9 @@ configureHandlebars(app);
 app.use("/", webViewsRoutes); // Las rutas dentro de index.js no tienen prefijo (ej: /)
 app.use("/api/products", productsApiRoutes); // CUALQUIER ruta dentro de products.js empezará con /products
 app.use("/user", userRoutes); // CUALQUIER ruta dentro de user.js empezará con /user
+app.use("/api/carts", cartsApiRoutes); // CUALQUIER ruta dentro de carts.api.js empezará con /carts
+
+
 // 4. Encendido del Servidor y escucho en el puerto definido
 app.listen(port, () => {
   // imprimo un mensaje en la consola indicando que el servidor está corriendo

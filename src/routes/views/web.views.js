@@ -2,6 +2,7 @@
 import { Router } from "express";
 // 1. Importamos el JSON de productos aquí también
 import productos from "../../data/productos.json" with { type: "json" };
+import { getCartById } from "../../dao/CartManager.js";
 
 const router = Router();
 
@@ -129,5 +130,36 @@ router.get("/products/:id", (req, res) => {
         producto: productoEncontrado
     });
 });
+
+
+// Vista de un carrito específico
+router.get("/carts/:cid", async (req, res) => {
+    const cid = Number(req.params.cid);
+    const cart = await getCartById(cid);
+
+    if (!cart) {
+        return res.status(404).send("<h1>404 - Carrito no encontrado</h1>");
+    }
+
+    // Enriquecemos cada item del carrito con los datos completos del producto
+    const productosEnCarrito = cart.products.map(item => {
+        const producto = productos.find(p => p.id === item.productId);
+        return {
+            ...producto,
+            quantity: item.quantity,
+            subtotal: producto.precio * item.quantity
+        };
+    });
+
+    const total = productosEnCarrito.reduce((acc, item) => acc + item.subtotal, 0);
+
+    res.render("carts/detail", {
+        title: `Carrito #${cid}`,
+        cid,
+        productos: productosEnCarrito,
+        total
+    });
+});
+
 
 export default router;
