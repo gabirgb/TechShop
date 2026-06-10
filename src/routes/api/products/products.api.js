@@ -1,61 +1,116 @@
-// Este archivo maneja el catálogo de productos. 
 import { Router } from "express";
-// Importamos el JSON de productos de forma nativa
-// Como usamos el modo nativo de ES Modules ("type": "module"), Node.js nos exige importar archivos JSON usando una sintaxis especial llamada Import Attributes (with { type: "json" }).
-import productos from "../../../data/productos.json" with { type: "json" };
+import { productDAO } from "../../../dao/mongo/product.dao.js";
 
 const router = Router();
 
+// 🚀 GET /api/products -> Formato dinámico con Paginación y Filtros
+router.get("/", async (req, res) => {
+    try {
+        let { limit = 10, page = 1, sort, query } = req.query;
 
-// 🚀 GET /api/products -> Formato JSON puro para Postman/Evaluación
-router.get("/", (req, res) => {
-    // Por ahora, para cumplir de forma segura antes de ver Mongoose Paginate en clase,
-    // devolvemos la estructura exacta de la consigna con tu array completo de 30 productos.
-    res.json({
-        status: "success",
-        payload: productos, // Aquí viaja tu JSON de 30 ítems
-        totalPages: 1,
-        prevPage: null,
-        nextPage: null,
-        page: 1,
-        hasPrevPage: false,
-        hasNextPage: false,
-        prevLink: null,
-        nextLink: null
-    });
-});
+        limit = parseInt(limit);
+        page = parseInt(page);
 
-// 🚀 GET /api/products/:pid -> Obtener un producto por ID en formato JSON
-// Cambié ":id" por ":pid" (Product ID) para adaptarlo a la nomenclatura exacta de tu consigna
-router.get("/:pid", (req, res) => {
-    // Capturamos el ID que viene en la URL (ej: /products/2) y lo pasamos a Número
-    const productoId = Number(req.params.pid);
+        // 1. Construcción del Filtro (query)
+        let filter = {};
+        if (query) {
+            // Evaluamos si el filtro busca por disponibilidad (true/false) o por categoría
+            if (query === "true" || query === "false") {
+                filter.status = query === "true";
+            } else {
+                filter.category = query;
+            }
+        }
 
-    // Buscamos el producto correcto dentro de nuestro array de JSON
-    const productoEncontrado = productos.find(p => p.id === productoId);
+        // 2. Opciones de Paginación y Ordenamiento
+        let options = {
+            limit,
+            page,
+            lean: true // Nos asegura recibir objetos JS planos ideales para Handlebars más adelante
+        };
 
-    // Si el producto no existe, mandamos un error 404 estético
-    if (!productoEncontrado) {
-        return res.status(404).json({
-            status: "error",
-            error: "Product not found"
+        if (sort) {
+            // 'asc' o 'desc' -> Traducido a 1 o -1 para Mongoose
+            options.sort = { price: sort === "asc" ? 1 : -1 };
+        }
+
+        // 3. Consulta al DAO
+        const result = await productDAO.getAll(filter, options);
+
+        // 4. Construcción de enlaces de navegación (prevLink / nextLink)
+        const baseUrl = `${req.protocol}://${req.get("host")}${req.baseUrl}`;
+        const prevLink = result.hasPrevPage ? `${baseUrl}?page=${result.prevPage}&limit=${limit}${sort ? `&sort=${sort}` : ''}${query ? `&query=${query}` : ''}` : null;
+        const nextLink = result.hasNextPage ? `${baseUrl}?page=${result.nextPage}&limit=${limit}${sort ? `&sort=${sort}` : ''}${query ? `&query=${query}` : ''}` : null;
+
+        // 5. Respuesta exacta solicitada por la consigna
+        res.json({
+            status: "success",
+            payload: result.docs,
+            totalPages: result.totalPages,
+            prevPage: result.prevPage,
+            nextPage: result.nextPage,
+            page: result.page,
+            hasPrevPage: result.hasPrevPage,
+            hasNextPage: result.hasNextPage,
+            prevLink,
+            nextLink
         });
-    }
 
-    // Si existe, renderizaremos una vista de detalle (que puedes maquetar luego) 
-    // Por ahora, para probar que la lógica busca bien, enviamos un texto temporal:
-    // res.send(`
-    //     <h1>Detalle de: ${productoEncontrado.nombre}</h1>
-    //     <p>Descripción: ${productoEncontrado.descripcion}</p>
-    //     <p>Precio: $${productoEncontrado.precio}</p>
-    //     <a href="/products">Volver al catálogo</a>
-    // `);
-    // Ahora si el render de la vista de detalle:
-    res.json({
-        status: "success",
-        payload: productoEncontrado
-    });
+    } catch (error) {
+        res.status(500).json({ status: "error", error: error.message });
+    }
 });
 
+// GET /api/products/:pid -> Obtener por ID
+router.get("/:pid", async (req, res) => {
+    try {
+        const product = await productDAO.getById(req.params.pid);
+        if (!product) return res.status(404).json({ status: "error", error: "Product not found" });
 
-export default router; // Exportamos el router completo
+        res.json({ status: "success", payload: product });
+    } catch (error) {
+        res.status(500).json({ status: "error", error: error.message });
+    }
+});
+
+// POST /api/products -> Crear producto
+router.post("/", async (req, res) => {
+    try {
+        const newProduct = await productDAO.create(req.body);
+
+        // ¡Bonus para WebSockets! Emitir evento global cada vez que se agrega un producto
+        req.io.emit("updateProducts", await productDAO.getAll({}, { lean: true }));
+
+        res.status(201).json({ status: "success", payload: newProduct });
+    } catch (error) {
+        res.status(400).json({ status: "error", error: error.message });
+    }
+});
+
+// PUT /api/products/:pid -> Actualizar producto
+router.put("/:pid", async (req, res) => {
+    try {
+        const updated = await productDAO.update(req.params.pid, req.body);
+        if (!updated) return res.status(404).json({ status: "error", error: "Product not found" });
+
+        req.io.emit("updateProducts", await productDAO.getAll({}, { lean: true }));
+        res.json({ status: "success", payload: updated });
+    } catch (error) {
+        res.status(400).json({ status: "error", error: error.message });
+    }
+});
+
+// DELETE /api/products/:pid -> Eliminar producto
+router.delete("/:pid", async (req, res) => {
+    try {
+        const deleted = await productDAO.delete(req.params.pid);
+        if (!deleted) return res.status(404).json({ status: "error", error: "Product not found" });
+
+        req.io.emit("updateProducts", await productDAO.getAll({}, { lean: true }));
+        res.json({ status: "success", payload: deleted });
+    } catch (error) {
+        res.status(500).json({ status: "error", error: error.message });
+    }
+});
+
+export default router;
