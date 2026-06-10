@@ -2,7 +2,7 @@
 import { Router } from "express";
 // 1. Importamos el JSON de productos aquí también
 import productos from "../../data/productos.json" with { type: "json" };
-import { getCartById } from "../../dao/CartManager.js";
+import { getCartById } from "../../dao/fs/CartManager.js";
 
 const router = Router();
 

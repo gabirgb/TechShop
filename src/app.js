@@ -10,7 +10,7 @@ import { fileURLToPath } from "url";
 // La ruta raíz (/) ahora vive dentro del archivo src/routes/index.js (para usar express.Router()). Ahí es donde está guardada la variable autenticado.
 //mainRoutes, productRoutes y userRoutes son alias para usar luego en el app.use() y vincularlos a la aplicación.
 import webViewsRoutes from "./routes/views/web.views.js";
-import productsApiRoutes from "./routes/api/products.api.js";
+import productsApiRoutes from "./routes/api/products/products.api.js";
 import userRoutes from "./routes/user.js";
 import cartsApiRoutes from "./routes/api/carts/carts.api.js";
 

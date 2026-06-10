@@ -2,7 +2,7 @@
 import { Router } from "express";
 // Importamos el JSON de productos de forma nativa
 // Como usamos el modo nativo de ES Modules ("type": "module"), Node.js nos exige importar archivos JSON usando una sintaxis especial llamada Import Attributes (with { type: "json" }).
-import productos from "../../data/productos.json" with { type: "json" };
+import productos from "../../../data/productos.json" with { type: "json" };
 
 const router = Router();
 

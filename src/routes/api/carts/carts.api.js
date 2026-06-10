@@ -8,7 +8,7 @@ import {
     updateCart,
     updateProductQuantity,
     clearCart
-} from "../../../dao/CartManager.js";
+} from "../../../dao/fs/CartManager.js";
 
 const router = Router();
 
