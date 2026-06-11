@@ -1,44 +1,51 @@
-<section class="catalogo-productos">
-  <h1>Nuestro Catálogo</h1>
-  <p class="subtitulo">Explora los mejores componentes para tu setup.</p>
+<h1>🛒 Catálogo de Productos TechShop</h1>
 
-  <div class="grilla-productos">
-    {{#each productos}}
-      <article class="tarjeta-producto">
-        <img src="{{this.imagenes.[0]}}" alt="{{this.nombre}}" class="imagen-producto" />
+<div
+  id="products-container"
+  style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;"
+>
+  {{#each products}}
+    <div
+      class="product-card"
+      id="prod-{{this._id}}"
+      style="border: 1px solid #ccc; padding: 15px; border-radius: 8px;"
+    >
+      <h3>{{this.title}}</h3>
+      <p>{{this.description}}</p>
+      <p><strong>Precio:</strong> ${{this.price}}</p>
+      <p><strong>Categoría:</strong> {{this.category}}</p>
+      <a
+        href="/products/{{this._id}}"
+        style="background-color: #007bff; color: white; padding: 5px 10px; text-decoration: none; border-radius: 4px;"
+      >Ver Detalle</a>
+    </div>
+  {{/each}}
+</div>
 
-        <div class="info-producto">
-          <span class="categoria-etiqueta">{{mayusculas this.categoria}}</span>
-          <h3>{{this.nombre}}</h3>
-          <p class="marca">Marca: {{this.marca}}</p>
-          <p class="descripcion-corta">{{this.descripcion}}</p>
-
-          <div class="fila-precio-stock">
-            <span class="precio">${{this.precio}}</span>
-
-            {{#siEsIgual this.stock 0}}
-              <span class="stock sin-stock">Sin Stock</span>
-            {{else}}
-              <span class="stock con-stock">Stock: {{this.stock}} u.</span>
-            {{/siEsIgual}}
-          </div>
-
-          <a href="/products/{{this.id}}" class="btn-detalle">Ver Detalle</a>
-        </div>
-      </article>
-    {{else}}
-      <p class="no-productos">Por el momento no hay productos disponibles en el catálogo.</p>
-    {{/each}}
-  </div>
-</section>
-<nav class="paginador">
-  {{#if paginaAnterior}}
-    <a href="?pagina={{paginaAnterior}}" class="btn-pag">⬅️ Anterior</a>
+<div class="pagination" style="margin-top: 30px; text-align: center;">
+  {{#if hasPrevPage}}
+    <a href="{{prevLink}}" style="padding: 10px; background: #eee; text-decoration: none;">⬅️
+      Anterior</a>
   {{/if}}
 
-  <span class="info-pag">Página <strong>{{paginaActual}}</strong> de {{totalPaginas}}</span>
+  <span style="margin: 0 15px;">Página {{page}} de {{totalPages}}</span>
 
-  {{#if paginaSiguiente}}
-    <a href="?pagina={{paginaSiguiente}}" class="btn-pag">Siguiente ➡️</a>
+  {{#if hasNextPage}}
+    <a href="{{nextLink}}" style="padding: 10px; background: #eee; text-decoration: none;">Siguiente
+      ➡️</a>
   {{/if}}
-</nav>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io(); // Escuchamos el evento 'updateProducts' que tira el backend cuando cambia
+  algo socket.on("updateProducts", (data) => { const container =
+  document.getElementById("products-container"); container.innerHTML = ""; // Vaciamos y redibujamos
+  dinámicamente // data.docs contiene el array de productos actualizado const productsList =
+  data.docs || data; productsList.forEach(prod => { container.innerHTML += ` <div
+  class="product-card" id="prod-${prod._id}" style="border: 1px solid #ccc; padding: 15px;
+  border-radius: 8px;"> <h3>${prod.title}</h3> <p>${prod.description}</p>
+  <p><strong>Precio:</strong> $${prod.price}</p> <p><strong>Categoría:</strong> ${prod.category}</p>
+  <a href="/products/${prod._id}" style="background-color: #007bff; color: white; padding: 5px 10px;
+  text-decoration: none; border-radius: 4px;">Ver Detalle</a> </div> `; }); });
+</script>

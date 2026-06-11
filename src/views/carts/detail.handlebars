@@ -1,53 +1,32 @@
-<article class="detalle-producto-contenedor">
-  <div class="columna-info" style="flex: 1; width: 100%;">
-    <h1>🛒 Carrito #{{cid}}</h1>
+<h1>🛒 Contenido de tu Carrito</h1>
+<p style="color: gray;">ID del Carrito: {{cartId}}</p>
 
-    {{#if productos.length}}
-      <table style="width:100%; border-collapse: collapse; margin-top: 1.5rem;">
-        <thead>
-          <tr style="border-bottom: 2px solid #ccc; text-align: left;">
-            <th style="padding: 0.75rem;">Producto</th>
-            <th style="padding: 0.75rem;">Precio</th>
-            <th style="padding: 0.75rem;">Cantidad</th>
-            <th style="padding: 0.75rem;">Subtotal</th>
+<div style="margin-top: 20px; border: 1px solid #aaa; padding: 20px; border-radius: 8px;">
+  {{#if products.length}}
+    <table style="width: 100%; text-align: left; border-collapse: collapse;">
+      <thead>
+        <tr style="border-bottom: 2px solid #000;">
+          <th>Producto</th>
+          <th>Categoría</th>
+          <th>Precio Unitario</th>
+          <th>Cantidad</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each products}}
+          <tr style="border-bottom: 1px solid #ddd; height: 40px;">
+            <td><strong>{{this.product.title}}</strong></td>
+            <td>{{this.product.category}}</td>
+            <td>${{this.product.price}}</td>
+            <td>{{this.quantity}}</td>
           </tr>
-        </thead>
-        <tbody>
-          {{#each productos}}
-            <tr style="border-bottom: 1px solid #eee;">
-              <td style="padding: 0.75rem; display: flex; align-items: center; gap: 1rem;">
-                <img
-                  src="{{this.imagenes.[0]}}"
-                  alt="{{this.nombre}}"
-                  style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;"
-                />
-                <div>
-                  <strong>{{this.nombre}}</strong><br />
-                  <span class="categoria-etiqueta">{{mayusculas this.categoria}}</span>
-                </div>
-              </td>
-              <td style="padding: 0.75rem;">${{this.precio}}</td>
-              <td style="padding: 0.75rem;">{{this.quantity}}</td>
-              <td style="padding: 0.75rem;"><strong>${{this.subtotal}}</strong></td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
-
-      <div class="bloque-compra" style="margin-top: 2rem; text-align: right;">
-        <span class="precio-grande">Total: ${{total}}</span>
-        <br />
-        <button class="btn-comprar" style="margin-top: 1rem;">Finalizar compra ✅</button>
-      </div>
-
-    {{else}}
-      <div class="alerta-stock agotado" style="margin-top: 2rem;">
-        🛒 El carrito está vacío.
-      </div>
-    {{/if}}
-
-    <a href="/products" class="enlace-volver" style="margin-top: 2rem; display: inline-block;">
-      ⬅️ Seguir comprando
-    </a>
-  </div>
-</article>
+        {{/each}}
+      </tbody>
+    </table>
+  {{else}}
+    <h3>El carrito está vacío 😔</h3>
+  {{/if}}
+</div>
+<br />
+<a href="/products">🛒 Seguir comprando</a>
