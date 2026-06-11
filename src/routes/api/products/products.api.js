@@ -78,8 +78,12 @@ router.post("/", async (req, res) => {
     try {
         const newProduct = await productDAO.create(req.body);
 
-        // ¡Bonus para WebSockets! Emitir evento global cada vez que se agrega un producto
-        req.io.emit("updateProducts", await productDAO.getAll({}, { lean: true }));
+        // 🔥 FORZAMOS EL LÍMITE DE 6 ELEMENTOS TAMBIÉN EN EL SOCKET
+        // De esta manera, el resultado va a venir paginado correctamente
+        const result = await productDAO.getAll({}, { limit: 6, page: 1, sort: { _id: -1 }, lean: true });
+
+        console.log("📢 Emitiendo primera página de productos a WebSockets...");
+        req.io.emit("updateProducts", result); // Enviamos el objeto de paginación completo
 
         res.status(201).json({ status: "success", payload: newProduct });
     } catch (error) {
@@ -93,7 +97,10 @@ router.put("/:pid", async (req, res) => {
         const updated = await productDAO.update(req.params.pid, req.body);
         if (!updated) return res.status(404).json({ status: "error", error: "Product not found" });
 
-        req.io.emit("updateProducts", await productDAO.getAll({}, { lean: true }));
+        // 🔥 EXTRAEMOS SOLO .docs PARA ENVIAR EL ARRAY LIMPIO AL EMIT
+        const result = await productDAO.getAll({}, { sort: { _id: -1 }, lean: true });
+        req.io.emit("updateProducts", result.docs || result);
+
         res.json({ status: "success", payload: updated });
     } catch (error) {
         res.status(400).json({ status: "error", error: error.message });
@@ -106,7 +113,10 @@ router.delete("/:pid", async (req, res) => {
         const deleted = await productDAO.delete(req.params.pid);
         if (!deleted) return res.status(404).json({ status: "error", error: "Product not found" });
 
-        req.io.emit("updateProducts", await productDAO.getAll({}, { lean: true }));
+        // 🔥 EXTRAEMOS SOLO .docs PARA ENVIAR EL ARRAY LIMPIO AL EMIT
+        const result = await productDAO.getAll({}, { sort: { _id: -1 }, lean: true });
+        req.io.emit("updateProducts", result.docs || result);
+
         res.json({ status: "success", payload: deleted });
     } catch (error) {
         res.status(500).json({ status: "error", error: error.message });

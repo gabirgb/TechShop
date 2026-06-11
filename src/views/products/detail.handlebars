@@ -1,31 +1,39 @@
-<div
-  style="max-width: 600px; margin: 0 auto; border: 1px solid #000; padding: 20px; border-radius: 10px; margin-top: 40px;"
->
-  <h2>{{product.title}}</h2>
-  <hr />
-  <p style="font-size: 1.2em;">{{product.description}}</p>
-  <p><strong>Código de barra:</strong> {{product.code}}</p>
-  <p><strong>Categoría:</strong> {{product.category}}</p>
-  <p><strong>Stock Disponible:</strong> {{product.stock}} unidades</p>
-  <h3 style="color: green;">Precio: ${{product.price}}</h3>
+<div class="detalle-producto-contenedor">
 
-  <button
-    onclick="agregarAlCarrito('{{product._id}}')"
-    style="background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 1em;"
-  >
-    🛒 Agregar al Carrito
-  </button>
-  <br /><br />
-  <a href="/products">🔙 Volver al catálogo</a>
+  <div>
+    <div
+      class="imagen-detalle-principal"
+      style="display: flex; align-items: center; justify-content: center; font-size: 5rem;"
+    >
+      💻
+    </div>
+  </div>
+
+  <div class="info-producto">
+    <span class="categoria-etiqueta">{{mayusculas product.category}}</span>
+    <h2>{{product.title}}</h2>
+    <p class="marca-detalle"><strong>Código de referencia:</strong> {{product.code}}</p>
+
+    <p class="descripcion-corta" style="font-size: 1.1rem; line-height: 1.6; color: #334155;">
+      {{product.description}}
+    </p>
+
+    <div class="bloque-compra">
+      <span class="precio-grande">${{product.price}}</span>
+
+      {{#if product.stock}}
+        <p class="alerta-stock disponible">🟢 Stock Disponible: {{product.stock}} unidades</p>
+        <button onclick="agregarAlCarrito('{{product._id}}')" class="btn-comprar">
+          🛒 Agregar al Carrito
+        </button>
+      {{else}}
+        <p class="alerta-stock agotado">🔴 Producto agotado temporalmente</p>
+        <button class="btn-comprar" disabled>Sin Stock</button>
+      {{/if}}
+    </div>
+
+    <a href="/products" class="enlace-volver">🔙 Volver al catálogo</a>
+  </div>
 </div>
 
-<script>
-  function agregarAlCarrito(productId) { // Tip Pro: Como no tenés login, creás un carrito en
-  Postman una vez, // pegás el ID acá abajo fijo, y la acción va a funcionar nativamente en tu
-  frontend. const HARDCODED_CART_ID = "TU_ID_DE_CARRITO_DE_POSTMAN_AQUÍ"; if(HARDCODED_CART_ID ===
-  "TU_ID_DE_CARRITO_DE_POSTMAN_AQUÍ") { alert("Para probar este botón, poné un ID de carrito real en
-  el archivo detail.handlebars"); return; }
-  fetch(`/api/carts/${HARDCODED_CART_ID}/products/${productId}`, { method: 'POST' }) .then(res =>
-  res.json()) .then(data => { if(data.status === "success") { alert("¡Producto agregado con éxito al
-  carrito!"); } else { alert("Hubo un error al agregar."); } }); }
-</script>
+<script src="/js/detail.js"></script>

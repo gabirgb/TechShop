@@ -1,51 +1,33 @@
 <h1>🛒 Catálogo de Productos TechShop</h1>
 
-<div
-  id="products-container"
-  style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;"
->
+<div id="products-container" class="grilla-productos">
   {{#each products}}
-    <div
-      class="product-card"
-      id="prod-{{this._id}}"
-      style="border: 1px solid #ccc; padding: 15px; border-radius: 8px;"
-    >
-      <h3>{{this.title}}</h3>
-      <p>{{this.description}}</p>
-      <p><strong>Precio:</strong> ${{this.price}}</p>
-      <p><strong>Categoría:</strong> {{this.category}}</p>
-      <a
-        href="/products/{{this._id}}"
-        style="background-color: #007bff; color: white; padding: 5px 10px; text-decoration: none; border-radius: 4px;"
-      >Ver Detalle</a>
+    <div class="tarjeta-producto" id="prod-{{this._id}}">
+      <div class="info-producto">
+        <span class="categoria-etiqueta">{{mayusculas this.category}}</span>
+        <h3>{{this.title}}</h3>
+        <p class="descripcion-corta">{{this.description}}</p>
+        <div class="fila-precio-stock">
+          <span class="precio">${{this.price}}</span>
+          <span class="stock con-stock">Stock: {{this.stock}}</span>
+        </div>
+        <a href="/products/{{this._id}}" class="btn-details btn-detalle">Ver Detalle</a>
+      </div>
     </div>
   {{/each}}
 </div>
 
-<div class="pagination" style="margin-top: 30px; text-align: center;">
+<div class="paginador">
   {{#if hasPrevPage}}
-    <a href="{{prevLink}}" style="padding: 10px; background: #eee; text-decoration: none;">⬅️
-      Anterior</a>
+    <a href="{{prevLink}}" class="btn-pag">⬅️ Anterior</a>
   {{/if}}
 
-  <span style="margin: 0 15px;">Página {{page}} de {{totalPages}}</span>
+  <span class="info-pag">Página {{page}} de {{totalPages}}</span>
 
   {{#if hasNextPage}}
-    <a href="{{nextLink}}" style="padding: 10px; background: #eee; text-decoration: none;">Siguiente
-      ➡️</a>
+    <a href="{{nextLink}}" class="btn-pag">Siguiente ➡️</a>
   {{/if}}
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
-<script>
-  const socket = io(); // Escuchamos el evento 'updateProducts' que tira el backend cuando cambia
-  algo socket.on("updateProducts", (data) => { const container =
-  document.getElementById("products-container"); container.innerHTML = ""; // Vaciamos y redibujamos
-  dinámicamente // data.docs contiene el array de productos actualizado const productsList =
-  data.docs || data; productsList.forEach(prod => { container.innerHTML += ` <div
-  class="product-card" id="prod-${prod._id}" style="border: 1px solid #ccc; padding: 15px;
-  border-radius: 8px;"> <h3>${prod.title}</h3> <p>${prod.description}</p>
-  <p><strong>Precio:</strong> $${prod.price}</p> <p><strong>Categoría:</strong> ${prod.category}</p>
-  <a href="/products/${prod._id}" style="background-color: #007bff; color: white; padding: 5px 10px;
-  text-decoration: none; border-radius: 4px;">Ver Detalle</a> </div> `; }); });
-</script>
+<script src="/js/products.js"></script>
